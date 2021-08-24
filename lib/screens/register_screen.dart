@@ -5,7 +5,7 @@ import 'package:login/ui/input_decoration.dart';
 import 'package:login/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +25,7 @@ class LoginScreen extends StatelessWidget {
                     CardContainer(
                       child: Column(
                         children: [
-                          Text('Ingresar',
+                          Text('Registrate',
                               style: Theme.of(context).textTheme.headline4),
                           SizedBox(height: 30),
                           ChangeNotifierProvider(
@@ -37,13 +37,13 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(height: 10.0),
                     TextButton(
                         onPressed: () =>
-                            Navigator.pushReplacementNamed(context, 'register'),
+                            Navigator.pushReplacementNamed(context, 'login'),
                         style: ButtonStyle(
                             overlayColor: MaterialStateProperty.all(
                                 Colors.red.withOpacity(0.2)),
                             shape: MaterialStateProperty.all(StadiumBorder())),
                         child: Text(
-                          'No tienes cuenta Registrate ?',
+                          ' Ya tienes cuenta ? ',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.red),
                         )),
@@ -71,7 +71,7 @@ class _LoginForm extends StatelessWidget {
             autocorrect: false,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecorations.authInputDecoration(
-                hintText: 'example@gmail.com',
+                hintText: 'alain@gmail.com',
                 labelText: 'Correo Electronico',
                 icon: Icons.alternate_email),
             onChanged: (value) => loginForm.email = value,
@@ -86,7 +86,7 @@ class _LoginForm extends StatelessWidget {
           SizedBox(height: 10.0),
           TextFormField(
             autocorrect: false,
-            keyboardType: TextInputType.visiblePassword,
+            keyboardType: TextInputType.emailAddress,
             decoration: InputDecorations.authInputDecoration(
                 hintText: '************',
                 labelText: 'Contrase;a',
@@ -108,7 +108,7 @@ class _LoginForm extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                 child: Text(
-                  'Ingresar',
+                  'Registrate',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -123,14 +123,13 @@ class _LoginForm extends StatelessWidget {
 
                       //
                       loginForm.isLoading = true;
-                      final String? errorMessage = await authService.login(
+                      final String? errorMessage = await authService.createUser(
                           loginForm.email, loginForm.password);
                       //
                       if (errorMessage == null) {
                         Navigator.pushReplacementNamed(context, 'home');
                       } else {
                         print(errorMessage);
-                        NotificationService.showSnackbar(errorMessage);
                         loginForm.isLoading = false;
                       }
                     }),

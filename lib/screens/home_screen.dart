@@ -10,10 +10,21 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productsService = Provider.of<ProductsServices>(context);
+    final authService = Provider.of<AuthServices>(context, listen: false);
 
     if (productsService.isLoading) return LoadingScreen();
     return Scaffold(
-        appBar: AppBar(title: Text('Productos')),
+        appBar: AppBar(
+          title: Text('Productos'),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  authService.logout();
+                  Navigator.pushReplacementNamed(context, 'login');
+                },
+                icon: Icon(Icons.login_outlined))
+          ],
+        ),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
               productsService.selectedProduct =
